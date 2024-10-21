@@ -6,10 +6,10 @@ public class Player extends Entity {
     private Vector2D velocity;
     private double speed;
 
-    public Player(double x, double y, double speed) {
+    public Player(double x, double y) {
         super(x, y, 50, 50, "/images/player.png");
         velocity = Vector2D.ZERO;
-        this.speed = speed;
+        speed = 0.0;
     }
 
 
@@ -21,6 +21,8 @@ public class Player extends Entity {
             position = position.add(velocity);
             velocity = Vector2D.ZERO;
         }
+
+        speed = 0.0;
     }
 
     public void moveLeft() {
@@ -34,5 +36,9 @@ public class Player extends Entity {
     }
     public void moveDown() {
         velocity = velocity.add(new Vector2D(0.0, 1.0));
+    }
+
+    public void setSpeed(double newSpeed) {
+        speed = newSpeed;
     }
 }

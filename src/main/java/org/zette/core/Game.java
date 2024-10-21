@@ -18,7 +18,7 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
     private Player player;
 
     public Game() {
-        player = new Player(0.0, 0.0, 7.0);
+        player = new Player(0.0, 0.0);
 
         // Create a timer that updates the game FPS times per second
         // Update logic happens in actionPerformed
@@ -56,6 +56,12 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
     }
 
     private void handleKeys() {
+        // Player speed
+        if (pressedKeys.contains(KeyEvent.VK_SHIFT)) {
+            player.setSpeed(20.0);
+        } else {
+            player.setSpeed(7.0);
+        }
         // Player movement
         if (pressedKeys.contains(KeyEvent.VK_LEFT)) {
             player.moveLeft();
