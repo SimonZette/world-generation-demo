@@ -1,13 +1,23 @@
 package org.zette.core;
 
+import org.zette.entities.Tree;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Random;
+import java.io.IOException;
 
 public class GamePanel extends JPanel implements ActionListener {
+    Tree tree;
+
     public GamePanel() {
+        try {
+            tree = new Tree(100, 200);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         // Create a timer that updates the game FPS times per second
         // Update logic happens in actionPerformed
         final int FPS = 60;
@@ -21,15 +31,11 @@ public class GamePanel extends JPanel implements ActionListener {
         repaint();
     }
 
-    Random generator = new Random();
     @Override
     public void paint(Graphics g) {
         super.paint(g);
 
-        // FIXME: This is for testing
-        int x = generator.nextInt(100, 800);
-        int y = generator.nextInt(100, 400);
-        g.drawRect(x, y, 200, 200);
+        tree.draw(g);
     }
 
 }
