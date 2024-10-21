@@ -6,13 +6,10 @@ import org.zette.entities.Tree;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.HashSet;
 
-public class GamePanel extends JPanel implements ActionListener, KeyListener {
+public class GamePanel extends JPanel implements ActionListener, ComponentListener, KeyListener {
     // Contains all the currently pressed keys
     private final HashSet<Integer> pressedKeys = new HashSet<>();
     private final Camera c = new Camera();
@@ -47,12 +44,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
+        Graphics2D g2d = (Graphics2D) g;
 
-        c.applyTransform(g);
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
 
-        player.draw(g);
-        tree.draw(g);
+        c.applyTransform(g2d);
+
+        player.draw(g2d);
+        tree.draw(g2d);
     }
 
     private void handleKeys() {
@@ -67,6 +67,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         }
         if (pressedKeys.contains(KeyEvent.VK_DOWN)) {
             player.moveDown();
+        }
+
+        if (pressedKeys.contains(KeyEvent.VK_PAGE_UP)) {
+            c.zoom(0.05);
+        }
+        if (pressedKeys.contains(KeyEvent.VK_PAGE_DOWN)) {
+            c.zoom(-0.05);
         }
     }
 
@@ -85,4 +92,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public void keyReleased(KeyEvent e) {
         pressedKeys.remove(e.getKeyCode());
     }
+
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        c.setTarget(new Vector2D(getWidth() / 2.0, getHeight() / 2.0));
+    }
+
+    // These are all not needed
+    @Override
+    public void componentMoved(ComponentEvent e) {}
+    @Override
+    public void componentShown(ComponentEvent e) {}
+    @Override
+    public void componentHidden(ComponentEvent e) {}
 }

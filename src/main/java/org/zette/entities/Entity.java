@@ -27,8 +27,8 @@ public abstract class Entity {
         }
     }
 
-    public void draw(Graphics g) {
-        g.drawImage(image,
+    public void draw(Graphics2D g2d) {
+        g2d.drawImage(image,
                 (int) position.getX(), (int) position.getY(),
                 width, height,
                 null);
