@@ -6,17 +6,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class GamePanel extends JPanel implements ActionListener {
     Tree tree;
 
     public GamePanel() {
-        try {
-            tree = new Tree(100, 200);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        tree = new Tree(100, 200);
 
         // Create a timer that updates the game FPS times per second
         // Update logic happens in actionPerformed
@@ -37,5 +32,4 @@ public class GamePanel extends JPanel implements ActionListener {
 
         tree.draw(g);
     }
-
 }
