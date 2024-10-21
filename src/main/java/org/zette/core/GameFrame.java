@@ -7,7 +7,7 @@ public class GameFrame extends JFrame {
         setTitle("A Big Game");
         setSize(1280, 720);
 
-        GamePanel panel = new GamePanel();
+        Game panel = new Game();
         add(panel);
         addComponentListener(panel);
         addKeyListener(panel);

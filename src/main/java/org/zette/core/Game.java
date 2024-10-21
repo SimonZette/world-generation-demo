@@ -2,24 +2,21 @@ package org.zette.core;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.zette.entities.Player;
-import org.zette.entities.Tree;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashSet;
 
-public class GamePanel extends JPanel implements ActionListener, ComponentListener, KeyListener {
+public class Game extends JPanel implements ActionListener, ComponentListener, KeyListener {
     // Contains all the currently pressed keys
     private final HashSet<Integer> pressedKeys = new HashSet<>();
     private final Camera c = new Camera();
 
     private Player player;
-    private Tree tree;
 
-    public GamePanel() {
+    public Game() {
         player = new Player(0.0, 0.0, 7.0);
-        tree = new Tree(100.0, 200.0);
 
         // Create a timer that updates the game FPS times per second
         // Update logic happens in actionPerformed
@@ -52,10 +49,10 @@ public class GamePanel extends JPanel implements ActionListener, ComponentListen
         c.applyTransform(g2d);
 
         player.draw(g2d);
-        tree.draw(g2d);
     }
 
     private void handleKeys() {
+        // Player movement
         if (pressedKeys.contains(KeyEvent.VK_LEFT)) {
             player.moveLeft();
         }
@@ -69,6 +66,7 @@ public class GamePanel extends JPanel implements ActionListener, ComponentListen
             player.moveDown();
         }
 
+        // Zooming
         if (pressedKeys.contains(KeyEvent.VK_PAGE_UP)) {
             c.zoom(0.05);
         }
@@ -78,10 +76,9 @@ public class GamePanel extends JPanel implements ActionListener, ComponentListen
     }
 
 
+    // Required by KeyListener, but not needed here
     @Override
-    public void keyTyped(KeyEvent e) {
-        // Required by KeyListener, but not needed here
-    }
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
