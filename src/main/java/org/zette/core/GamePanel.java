@@ -1,5 +1,6 @@
 package org.zette.core;
 
+import org.zette.entities.Player;
 import org.zette.entities.Tree;
 
 import javax.swing.*;
@@ -8,9 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GamePanel extends JPanel implements ActionListener {
-    Tree tree;
+    private Player player;
+    private Tree tree;
 
     public GamePanel() {
+        player = new Player(400, 200);
         tree = new Tree(100, 200);
 
         // Create a timer that updates the game FPS times per second
@@ -30,6 +33,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void paint(Graphics g) {
         super.paint(g);
 
+        player.draw(g);
         tree.draw(g);
     }
 }
