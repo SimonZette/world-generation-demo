@@ -7,8 +7,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashSet;
 
-public class GamePanel extends JPanel implements ActionListener {
+public class GamePanel extends JPanel implements ActionListener, KeyListener {
+    // Contains all the currently pressed keys
+    private final HashSet<Integer> pressedKeys = new HashSet<>();
+
     private Player player;
     private Tree tree;
 
@@ -35,5 +41,24 @@ public class GamePanel extends JPanel implements ActionListener {
 
         player.draw(g);
         tree.draw(g);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // Required by KeyListener, but not needed here
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        pressedKeys.add(e.getKeyCode());
+
+        System.out.println(pressedKeys);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        pressedKeys.remove(e.getKeyCode());
+
+        System.out.println(pressedKeys);
     }
 }

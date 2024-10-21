@@ -9,6 +9,7 @@ public class GameFrame extends JFrame {
 
         GamePanel panel = new GamePanel();
         add(panel);
+        addKeyListener(panel);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
