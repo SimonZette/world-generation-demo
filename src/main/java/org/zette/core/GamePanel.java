@@ -19,7 +19,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private Tree tree;
 
     public GamePanel() {
-        player = new Player(400, 200);
+        player = new Player(400, 200, 7);
         tree = new Tree(100, 200);
 
         // Create a timer that updates the game FPS times per second
@@ -32,6 +32,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        handleKeys();
         repaint();
     }
 
@@ -43,6 +44,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         tree.draw(g);
     }
 
+    private void handleKeys() {
+        if (pressedKeys.contains(KeyEvent.VK_LEFT)) {
+            player.moveLeft();
+        }
+        if (pressedKeys.contains(KeyEvent.VK_RIGHT)) {
+            player.moveRight();
+        }
+        if (pressedKeys.contains(KeyEvent.VK_UP)) {
+            player.moveUp();
+        }
+        if (pressedKeys.contains(KeyEvent.VK_DOWN)) {
+            player.moveDown();
+        }
+    }
+
+
     @Override
     public void keyTyped(KeyEvent e) {
         // Required by KeyListener, but not needed here
@@ -51,14 +68,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         pressedKeys.add(e.getKeyCode());
-
-        System.out.println(pressedKeys);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         pressedKeys.remove(e.getKeyCode());
-
-        System.out.println(pressedKeys);
     }
 }
