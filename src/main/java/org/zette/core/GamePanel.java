@@ -19,8 +19,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private Tree tree;
 
     public GamePanel() {
-        player = new Player(400, 200, 7);
-        tree = new Tree(100, 200);
+        player = new Player(400.0, 200.0, 7.0);
+        tree = new Tree(100.0, 200.0);
 
         // Create a timer that updates the game FPS times per second
         // Update logic happens in actionPerformed
@@ -33,6 +33,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         handleKeys();
+
+        player.update();
+
         repaint();
     }
 

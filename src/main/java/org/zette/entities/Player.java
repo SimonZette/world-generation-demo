@@ -1,23 +1,38 @@
 package org.zette.entities;
 
-public class Player extends Entity {
-    private int speed;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-    public Player(int x, int y, int speed) {
+public class Player extends Entity {
+    private Vector2D velocity;
+    private double speed;
+
+    public Player(double x, double y, double speed) {
         super(x, y, 50, 50, "/images/player.png");
+        velocity = Vector2D.ZERO;
         this.speed = speed;
     }
 
+
+    public void update() {
+        // Only move if the velocity isn't zero
+        if (velocity.getNorm() != 0.0) {
+            velocity = velocity.normalize();
+            velocity = velocity.scalarMultiply(speed);
+            position = position.add(velocity);
+            velocity = Vector2D.ZERO;
+        }
+    }
+
     public void moveLeft() {
-        x -= speed;
+        velocity = velocity.add(new Vector2D(-1.0, 0.0));
     }
     public void moveRight() {
-        x += speed;
+        velocity = velocity.add(new Vector2D(1.0, 0.0));
     }
     public void moveUp() {
-        y -= speed;
+        velocity = velocity.add(new Vector2D(0.0, -1.0));
     }
     public void moveDown() {
-        y += speed;
+        velocity = velocity.add(new Vector2D(0.0, 1.0));
     }
 }
