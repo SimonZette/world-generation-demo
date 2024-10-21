@@ -33,4 +33,17 @@ public abstract class Entity {
                 width, height,
                 null);
     }
+
+
+    public Vector2D getPosition() {
+        return position;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }
