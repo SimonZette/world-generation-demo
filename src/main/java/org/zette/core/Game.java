@@ -2,6 +2,7 @@ package org.zette.core;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.zette.entities.Player;
+import org.zette.worldgen.World;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +13,7 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
     // Contains all the currently pressed keys
     private final HashSet<Integer> pressedKeys = new HashSet<>();
     private final Camera c = new Camera();
+    private final World w = new World();
 
     private Player player;
 
@@ -31,7 +33,7 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
         handleKeys();
 
         player.update();
-        c.setOffset(player.getPosition() // Start att the players upper left corner
+        c.setOffset(player.getPosition() // Start at the players upper left corner
                 .subtract(new Vector2D(this.getWidth() / 2.0, this.getHeight() / 2.0)) // Translate to the middle of the screen
                 .add(new Vector2D(player.getWidth() / 2.0, player.getHeight() / 2.0)) // Translate to the middle of the player
                 .scalarMultiply(-1.0));
@@ -47,6 +49,8 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
         c.applyTransform(g2d);
+
+        w.draw(g2d);
 
         player.draw(g2d);
     }
