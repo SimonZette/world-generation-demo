@@ -13,7 +13,8 @@ public class World {
     private final JNoise noise;
     private final ArrayList<Chunk> chunks;
 
-    private int renderDistance;
+    private int renderDistanceX;
+    private int renderDistanceY;
     private Vector2D oldChunkPosition;
 
     public World(int renderDistance) {
@@ -26,21 +27,21 @@ public class World {
 
         chunks = new ArrayList<>();
 
-        this.renderDistance = renderDistance;
+        renderDistanceX = renderDistance;
+        renderDistanceY = renderDistance;
     }
 
 
     public void updateChunks(Vector2D worldPosition) {
-        removeChunks(worldPosition);
-        generateChunks(worldPosition);
+        Vector2D centerChunkPosition = worldToChunkPosition(worldPosition);
+        removeChunks(centerChunkPosition);
+        generateChunks(centerChunkPosition);
     }
 
-    private void removeChunks(Vector2D worldPosition) {
-        Vector2D centerChunkPosition = worldToChunkPosition(worldPosition);
-
+    private void removeChunks(Vector2D centerChunkPosition) {
         for (Vector2D position : getChunkPositions()) {
-            if (Math.abs(position.getX() - centerChunkPosition.getX()) > renderDistance/2.0 ||
-                    Math.abs(position.getY() - centerChunkPosition.getY()) > renderDistance/2.0) {
+            if (Math.abs(position.getX() - centerChunkPosition.getX()) > renderDistanceX ||
+                    Math.abs(position.getY() - centerChunkPosition.getY()) > renderDistanceY) {
                for (int i = 0; i < chunks.size(); i++) {
                    if (chunks.get(i).getPosition().equals(position)) {
                        chunks.remove(i);
@@ -51,14 +52,12 @@ public class World {
         }
     }
 
-    private void generateChunks(Vector2D worldPosition) {
-        Vector2D centerChunkPosition = worldToChunkPosition(worldPosition);
-
+    private void generateChunks(Vector2D centerChunkPosition) {
         HashSet<Vector2D> currentChunkPositions = getChunkPositions();
 
         if (!centerChunkPosition.equals(oldChunkPosition)) {
-            for (int x = -renderDistance/2; x < (renderDistance+1)/2; x++) {
-                for (int y = -renderDistance/2; y < (renderDistance+1)/2; y++) {
+            for (int x = -renderDistanceX; x <= renderDistanceX; x++) {
+                for (int y = -renderDistanceY; y <= renderDistanceY; y++) {
 
                     Vector2D chunkPosition = centerChunkPosition.add(new Vector2D(x, y));
                     if (!currentChunkPositions.contains(chunkPosition)) { // As to not regenerate loaded chunks

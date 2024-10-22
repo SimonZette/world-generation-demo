@@ -30,7 +30,7 @@ public class Chunk {
                     color = Color.GREEN;
                 }
 
-                blocks[y* CHUNK_SIZE + x] = color;
+                blocks[y*CHUNK_SIZE + x] = color;
             }
         }
     }

@@ -13,7 +13,7 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
     // Contains all the currently pressed keys
     private final HashSet<Integer> pressedKeys = new HashSet<>();
     private final Camera c = new Camera();
-    private final World w = new World(5);
+    private final World w = new World(3);
 
     private Player player;
 
