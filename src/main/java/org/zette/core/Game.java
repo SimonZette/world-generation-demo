@@ -37,6 +37,7 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
                 .subtract(new Vector2D(this.getWidth() / 2.0, this.getHeight() / 2.0)) // Translate to the middle of the screen
                 .add(new Vector2D(player.getWidth() / 2.0, player.getHeight() / 2.0)) // Translate to the middle of the player
                 .scalarMultiply(-1.0));
+        w.generateChunks(player.getPosition());
 
         repaint();
     }

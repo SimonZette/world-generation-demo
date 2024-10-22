@@ -12,6 +12,8 @@ public class World {
     private final JNoise noise;
     private final ArrayList<Chunk> chunks;
 
+    private Vector2D oldChunkPosition;
+
     public World() {
         noise = JNoise.newBuilder()
                 .perlin(1337, Interpolation.QUADRATIC, FadeFunction.CUBIC_POLY)
@@ -21,10 +23,18 @@ public class World {
                 .build();
 
         chunks = new ArrayList<>();
-        chunks.add(new Chunk(new Vector2D(0.0, 0.0), noise));
-        chunks.add(new Chunk(new Vector2D(-1.0, 0.0), noise));
-        chunks.add(new Chunk(new Vector2D(0.0, -1.0), noise));
-        chunks.add(new Chunk(new Vector2D(-1.0, -1.0), noise));
+    }
+
+    public void generateChunks(Vector2D position) {
+        Vector2D chunkPosition = position
+                .scalarMultiply(1.0 / Chunk.CHUNK_SIZE)
+                .scalarMultiply(1.0 / Chunk.BLOCK_SIZE);
+        chunkPosition = new Vector2D(Math.floor(chunkPosition.getX()), Math.floor(chunkPosition.getY()));
+
+        if (!chunkPosition.equals(oldChunkPosition)) {
+            chunks.add(new Chunk(chunkPosition, noise));
+        }
+        oldChunkPosition = chunkPosition;
     }
 
     public void draw(Graphics2D g2d) {

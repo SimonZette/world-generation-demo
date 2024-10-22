@@ -6,8 +6,8 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import java.awt.*;
 
 public class Chunk {
-    private static final int CHUNK_SIZE = 32; // Num of blocks in a chunk
-    private static final int BLOCK_SIZE = 10; // Size of a block on the screen
+    public static final int CHUNK_SIZE = 32; // Num of blocks in a chunk
+    public static final int BLOCK_SIZE = 10; // Size of a block on the screen
 
     private final Vector2D position; // Represent which chunk this is, NOT where it is on the screen
     private final Color[] blocks;
