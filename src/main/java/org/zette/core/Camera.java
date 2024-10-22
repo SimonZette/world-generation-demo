@@ -35,4 +35,8 @@ public class Camera {
     public void zoom(double scaleDiff) {
         scale = Math.clamp(scale + scaleDiff, 0.5, 2.5);
     }
+
+    public double getScale() {
+        return scale;
+    }
 }

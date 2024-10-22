@@ -15,9 +15,8 @@ public class World {
 
     private int renderDistanceX;
     private int renderDistanceY;
-    private Vector2D oldChunkPosition;
 
-    public World(int renderDistance) {
+    public World() {
         noise = JNoise.newBuilder()
                 .perlin(1337, Interpolation.QUADRATIC, FadeFunction.CUBIC_POLY)
                 .scale(1.0 / 64.0)
@@ -27,8 +26,8 @@ public class World {
 
         chunks = new ArrayList<>();
 
-        renderDistanceX = renderDistance;
-        renderDistanceY = renderDistance;
+        renderDistanceX = 1;
+        renderDistanceY = 1;
     }
 
 
@@ -55,19 +54,23 @@ public class World {
     private void generateChunks(Vector2D centerChunkPosition) {
         HashSet<Vector2D> currentChunkPositions = getChunkPositions();
 
-        if (!centerChunkPosition.equals(oldChunkPosition)) {
-            for (int x = -renderDistanceX; x <= renderDistanceX; x++) {
-                for (int y = -renderDistanceY; y <= renderDistanceY; y++) {
+        for (int x = -renderDistanceX; x <= renderDistanceX; x++) {
+            for (int y = -renderDistanceY; y <= renderDistanceY; y++) {
 
-                    Vector2D chunkPosition = centerChunkPosition.add(new Vector2D(x, y));
-                    if (!currentChunkPositions.contains(chunkPosition)) { // As to not regenerate loaded chunks
-                        chunks.add(new Chunk(chunkPosition, noise));
-                    }
+                Vector2D chunkPosition = centerChunkPosition.add(new Vector2D(x, y));
+                if (!currentChunkPositions.contains(chunkPosition)) { // As to not regenerate loaded chunks
+                    chunks.add(new Chunk(chunkPosition, noise));
                 }
             }
         }
-        oldChunkPosition = centerChunkPosition;
     }
+
+
+    public void updateRenderDistance(int screenWidth, int screenHeight, double scale) {
+        renderDistanceX = (int) ((double) screenWidth / Chunk.CHUNK_SIZE / Chunk.BLOCK_SIZE / scale / 2) + 1;
+        renderDistanceY = (int) ((double) screenHeight / Chunk.CHUNK_SIZE / Chunk.BLOCK_SIZE / scale / 2) + 1;
+    }
+
 
     public void draw(Graphics2D g2d) {
         for (Chunk chunk : chunks) {

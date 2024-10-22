@@ -13,7 +13,7 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
     // Contains all the currently pressed keys
     private final HashSet<Integer> pressedKeys = new HashSet<>();
     private final Camera c = new Camera();
-    private final World w = new World(3);
+    private final World w = new World();
 
     private Player player;
 
@@ -84,9 +84,13 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
         // Zooming
         if (pressedKeys.contains(KeyEvent.VK_PAGE_UP)) {
             c.zoom(0.05);
+            w.updateRenderDistance(getWidth(), getHeight(), c.getScale());
+            w.updateChunks(player.getPosition());
         }
         if (pressedKeys.contains(KeyEvent.VK_PAGE_DOWN)) {
             c.zoom(-0.05);
+            w.updateRenderDistance(getWidth(), getHeight(), c.getScale());
+            w.updateChunks(player.getPosition());
         }
     }
 
@@ -109,6 +113,8 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
     @Override
     public void componentResized(ComponentEvent e) {
         c.setTarget(new Vector2D(getWidth() / 2.0, getHeight() / 2.0));
+        w.updateRenderDistance(getWidth(), getHeight(), c.getScale());
+        w.updateChunks(player.getPosition());
     }
 
     // These are all not needed
