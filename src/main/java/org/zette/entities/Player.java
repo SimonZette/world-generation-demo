@@ -8,7 +8,7 @@ public class Player extends Entity {
     private double speed;
 
     public Player(double x, double y) {
-        super(x, y, 50, 50, Util.loadImage("/images/player.png"));
+        super(x, y, 50, 50, Util.loadImage("images/player.png"));
         velocity = Vector2D.ZERO;
         speed = 0.0;
     }
