@@ -29,18 +29,39 @@ public class World {
         this.renderDistance = renderDistance;
     }
 
-    public void generateChunks(Vector2D position) {
-        Vector2D centerChunkPosition = position
-                .scalarMultiply(1.0 / Chunk.CHUNK_SIZE)
-                .scalarMultiply(1.0 / Chunk.BLOCK_SIZE);
-        centerChunkPosition = new Vector2D(Math.floor(centerChunkPosition.getX()), Math.floor(centerChunkPosition.getY()));
+
+    public void updateChunks(Vector2D worldPosition) {
+        removeChunks(worldPosition);
+        generateChunks(worldPosition);
+    }
+
+    private void removeChunks(Vector2D worldPosition) {
+        Vector2D centerChunkPosition = worldToChunkPosition(worldPosition);
+
+        for (Vector2D position : getChunkPositions()) {
+            if (Math.abs(position.getX() - centerChunkPosition.getX()) > renderDistance/2.0 ||
+                    Math.abs(position.getY() - centerChunkPosition.getY()) > renderDistance/2.0) {
+               for (int i = 0; i < chunks.size(); i++) {
+                   if (chunks.get(i).getPosition().equals(position)) {
+                       chunks.remove(i);
+                       break;
+                   }
+               }
+            }
+        }
+    }
+
+    private void generateChunks(Vector2D worldPosition) {
+        Vector2D centerChunkPosition = worldToChunkPosition(worldPosition);
+
+        HashSet<Vector2D> currentChunkPositions = getChunkPositions();
 
         if (!centerChunkPosition.equals(oldChunkPosition)) {
             for (int x = -renderDistance/2; x < (renderDistance+1)/2; x++) {
                 for (int y = -renderDistance/2; y < (renderDistance+1)/2; y++) {
 
                     Vector2D chunkPosition = centerChunkPosition.add(new Vector2D(x, y));
-                    if (!getChunkPositions().contains(chunkPosition)) { // As to not regenerate loaded chunks
+                    if (!currentChunkPositions.contains(chunkPosition)) { // As to not regenerate loaded chunks
                         chunks.add(new Chunk(chunkPosition, noise));
                     }
                 }
@@ -53,6 +74,15 @@ public class World {
         for (Chunk chunk : chunks) {
             chunk.draw(g2d);
         }
+    }
+
+
+    private Vector2D worldToChunkPosition(Vector2D worldPosition) {
+        Vector2D chunkPosition = worldPosition
+                .scalarMultiply(1.0 / Chunk.CHUNK_SIZE)
+                .scalarMultiply(1.0 / Chunk.BLOCK_SIZE);
+        chunkPosition = new Vector2D(Math.floor(chunkPosition.getX()), Math.floor(chunkPosition.getY()));
+        return chunkPosition;
     }
 
     private HashSet<Vector2D> getChunkPositions() {

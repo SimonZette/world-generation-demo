@@ -38,7 +38,7 @@ public class Chunk {
     public void draw(Graphics2D g2d) {
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int y = 0; y < CHUNK_SIZE; y++) {
-                g2d.setColor(blocks[y* CHUNK_SIZE + x]);
+                g2d.setColor(blocks[y*CHUNK_SIZE + x]);
                 g2d.fillRect(x*BLOCK_SIZE + (int) position.getX()*CHUNK_SIZE*BLOCK_SIZE,
                         y*BLOCK_SIZE + (int) position.getY()*CHUNK_SIZE*BLOCK_SIZE,
                         BLOCK_SIZE, BLOCK_SIZE);
