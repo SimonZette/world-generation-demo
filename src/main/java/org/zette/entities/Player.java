@@ -1,13 +1,14 @@
 package org.zette.entities;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.zette.Util;
 
 public class Player extends Entity {
     private Vector2D velocity;
     private double speed;
 
     public Player(double x, double y) {
-        super(x, y, 50, 50, "/images/player.png");
+        super(x, y, 50, 50, Util.loadImage("/images/player.png"));
         velocity = Vector2D.ZERO;
         speed = 0.0;
     }

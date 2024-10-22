@@ -1,12 +1,15 @@
 package org.zette.core;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.zette.Util;
+import org.zette.entities.Entity;
 import org.zette.entities.Player;
 import org.zette.worldgen.World;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.util.HashSet;
 
 public class Game extends JPanel implements ActionListener, ComponentListener, KeyListener {
@@ -16,9 +19,16 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
     private final World w = new World(5);
 
     private Player player;
+    private Entity tree1;
+    private Entity tree2;
 
     public Game() {
         player = new Player(0.0, 0.0);
+
+        BufferedImage image = Util.loadImage("/images/tree.png");
+        tree1 = new Entity(0, 0, 50, 100, image);
+        tree2 = new Entity(200, 0, 50, 100, image);
+
 
         // Create a timer that updates the game FPS times per second
         // Update logic happens in actionPerformed
@@ -54,6 +64,9 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
         w.draw(g2d);
 
         player.draw(g2d);
+
+        tree1.draw(g2d);
+        tree2.draw(g2d);
     }
 
     private void handleKeys() {
