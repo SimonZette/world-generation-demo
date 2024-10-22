@@ -45,4 +45,8 @@ public class Chunk {
             }
         }
     }
+
+    public Vector2D getPosition() {
+        return position;
+    }
 }

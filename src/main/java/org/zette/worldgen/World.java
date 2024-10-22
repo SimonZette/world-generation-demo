@@ -7,14 +7,16 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class World {
     private final JNoise noise;
     private final ArrayList<Chunk> chunks;
 
+    private int renderDistance;
     private Vector2D oldChunkPosition;
 
-    public World() {
+    public World(int renderDistance) {
         noise = JNoise.newBuilder()
                 .perlin(1337, Interpolation.QUADRATIC, FadeFunction.CUBIC_POLY)
                 .scale(1.0 / 64.0)
@@ -23,23 +25,43 @@ public class World {
                 .build();
 
         chunks = new ArrayList<>();
+
+        this.renderDistance = renderDistance;
     }
 
     public void generateChunks(Vector2D position) {
-        Vector2D chunkPosition = position
+        Vector2D centerChunkPosition = position
                 .scalarMultiply(1.0 / Chunk.CHUNK_SIZE)
                 .scalarMultiply(1.0 / Chunk.BLOCK_SIZE);
-        chunkPosition = new Vector2D(Math.floor(chunkPosition.getX()), Math.floor(chunkPosition.getY()));
+        centerChunkPosition = new Vector2D(Math.floor(centerChunkPosition.getX()), Math.floor(centerChunkPosition.getY()));
 
-        if (!chunkPosition.equals(oldChunkPosition)) {
-            chunks.add(new Chunk(chunkPosition, noise));
+        if (!centerChunkPosition.equals(oldChunkPosition)) {
+            for (int x = -renderDistance/2; x < (renderDistance+1)/2; x++) {
+                for (int y = -renderDistance/2; y < (renderDistance+1)/2; y++) {
+
+                    Vector2D chunkPosition = centerChunkPosition.add(new Vector2D(x, y));
+                    if (!getChunkPositions().contains(chunkPosition)) { // As to not regenerate loaded chunks
+                        chunks.add(new Chunk(chunkPosition, noise));
+                    }
+                }
+            }
         }
-        oldChunkPosition = chunkPosition;
+        oldChunkPosition = centerChunkPosition;
     }
 
     public void draw(Graphics2D g2d) {
         for (Chunk chunk : chunks) {
             chunk.draw(g2d);
         }
+    }
+
+    private HashSet<Vector2D> getChunkPositions() {
+        HashSet<Vector2D> chunkPositions = new HashSet<>();
+
+        for (Chunk chunk : chunks) {
+            chunkPositions.add(chunk.getPosition());
+        }
+
+        return chunkPositions;
     }
 }
