@@ -1,10 +1,7 @@
 package org.zette.core;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.zette.Util;
 import org.zette.entities.Player;
-import org.zette.entities.Bush;
-import org.zette.entities.Rock;
 import org.zette.worldgen.World;
 
 import javax.swing.*;
@@ -19,17 +16,9 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
     private final World w = new World();
 
     private Player player;
-    private Bush bush;
-    private Rock rock;
 
     public Game() {
         player = new Player(0.0, 0.0);
-
-        var image = Util.loadImage("images/bush.png");
-        bush = new Bush(100.0, 100.0, image);
-
-        image = Util.loadImage("images/rock.png");
-        rock = new Rock(200.0, 100.0, image);
 
         // Create a timer that updates the game FPS times per second
         // Update logic happens in actionPerformed
@@ -65,8 +54,6 @@ public class Game extends JPanel implements ActionListener, ComponentListener, K
         w.draw(g2d);
 
         player.draw(g2d);
-        bush.draw(g2d);
-        rock.draw(g2d);
     }
 
     private void handleKeys() {
