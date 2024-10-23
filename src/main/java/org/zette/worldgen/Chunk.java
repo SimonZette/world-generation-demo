@@ -1,21 +1,16 @@
 package org.zette.worldgen;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.zette.Util;
 import org.zette.entities.Bush;
 import org.zette.entities.Entity;
 import org.zette.entities.Rock;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Chunk {
     public static final int CHUNK_SIZE = 32; // Num of blocks in a chunk's side
     public static final int BLOCK_SIZE = 50; // Size of a side of a block on the screen
-
-    private static final BufferedImage rockImage = Util.loadImage("images/rock.png");
-    private static final BufferedImage bushImage = Util.loadImage("images/bush.png");
 
     private final Vector2D position; // Represent which chunk this is, NOT where it is on the screen
 
@@ -50,16 +45,16 @@ public class Chunk {
                 // Calculate where to put which entities
                 if (height > 0.45) {
                     if (entityValue > 0.95) {
-                        entities.add(new Rock(chunkX * BLOCK_SIZE, chunkY * BLOCK_SIZE, rockImage));
+                        entities.add(new Rock(chunkX * BLOCK_SIZE, chunkY * BLOCK_SIZE));
                     } else if (entityValue > 0.90) {
-                        entities.add(new Bush(chunkX * BLOCK_SIZE, chunkY * BLOCK_SIZE, bushImage));
+                        entities.add(new Bush(chunkX * BLOCK_SIZE, chunkY * BLOCK_SIZE));
                     }
                 }
             }
         }
     }
 
-    public void draw(Graphics2D g2d) {
+    public void drawGround(Graphics2D g2d) {
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int y = 0; y < CHUNK_SIZE; y++) {
                 g2d.setColor(blocks[y*CHUNK_SIZE + x]);
@@ -68,7 +63,9 @@ public class Chunk {
                         BLOCK_SIZE, BLOCK_SIZE);
             }
         }
+    }
 
+    public void drawEntities(Graphics2D g2d) {
         for (Entity entity : entities) {
             entity.draw(g2d);
         }

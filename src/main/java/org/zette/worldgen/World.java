@@ -66,7 +66,10 @@ public class World {
 
     public void draw(Graphics2D g2d) {
         for (Chunk chunk : chunks) {
-            chunk.draw(g2d);
+            chunk.drawGround(g2d);
+        }
+        for (Chunk chunk : chunks) {
+            chunk.drawEntities(g2d);
         }
     }
 
